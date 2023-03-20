@@ -1,6 +1,7 @@
 package com.example.converter.repository;
 
 import com.example.converter.entity.AuditLog;
+import com.example.converter.enums.ConverterType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -70,7 +71,7 @@ public class AuditLogRepositoryTest extends RepositoryTestConfig {
     @Modifying
     public void shouldDeleteAuditLog() {
         // given
-        AuditLog log = AuditLog.builder().conversionType("decimal").input("100").output("C").build();
+        AuditLog log = buildAuditLog();
         repository.save(log);
 
         // when
@@ -82,7 +83,7 @@ public class AuditLogRepositoryTest extends RepositoryTestConfig {
 
     private AuditLog buildAuditLog() {
         return AuditLog.builder()
-                .conversionType("decimal")
+                .conversionType(ConverterType.DECIMAL)
                 .input("100")
                 .output("C")
                 .build();

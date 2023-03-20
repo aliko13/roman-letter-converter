@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import com.example.converter.entity.AuditLog;
+import com.example.converter.enums.ConverterType;
 import com.example.converter.repository.AuditLogRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +35,7 @@ public class ConvertServiceGatewayTest {
         when(decimalToRomanConverter.convertToRoman(10)).thenReturn("X");
 
         // when
-        String result = gateway.convertToRomanNumeral("10", "decimal");
+        String result = gateway.convertToRomanNumeral("10", ConverterType.DECIMAL);
 
         // then
         verify(auditLogRepository, times(1)).save(any(AuditLog.class));
@@ -48,18 +49,11 @@ public class ConvertServiceGatewayTest {
         when(binaryToRomanConverter.convertToRoman(10)).thenReturn("X");
 
         // when
-        String result = gateway.convertToRomanNumeral("1010", "binary");
+        String result = gateway.convertToRomanNumeral("1010", ConverterType.BINARY);
 
         // then
         verify(auditLogRepository, times(1)).save(any(AuditLog.class));
         assertEquals("X", result);
-    }
-
-    @Test
-    public void shouldThrowExceptionForInvalidConversionType() {
-        // when / then
-        assertThrows(IllegalArgumentException.class,
-                () -> gateway.convertToRomanNumeral("10", "invalid"));
     }
 
     @Test
@@ -69,18 +63,10 @@ public class ConvertServiceGatewayTest {
         when(decimalToRomanConverter.convertToRoman(100)).thenReturn("C");
 
         // when
-        gateway.convertToRomanNumeral("100", "decimal");
+        gateway.convertToRomanNumeral("100", ConverterType.DECIMAL);
 
         // then
         verify(auditLogRepository, times(1)).save(any(AuditLog.class));
-    }
-
-    @Test
-    public void shouldNotLogConversionForInvalidConversionType() {
-        // when / then
-        assertThrows(IllegalArgumentException.class,
-                () -> gateway.convertToRomanNumeral("10", "invalid"));
-        verify(auditLogRepository, times(0)).save(any(AuditLog.class));
     }
 
     @Test
@@ -89,7 +75,7 @@ public class ConvertServiceGatewayTest {
         when(decimalToRomanConverter.parseToInteger("invalid")).thenThrow(NumberFormatException.class);
 
         // when / then
-        assertThrows(NumberFormatException.class, () -> gateway.convertToRomanNumeral("invalid", "decimal"));
+        assertThrows(NumberFormatException.class, () -> gateway.convertToRomanNumeral("invalid", ConverterType.DECIMAL));
         verify(auditLogRepository, times(0)).save(any(AuditLog.class));
     }
 }

@@ -1,8 +1,7 @@
 package com.example.converter.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.example.converter.enums.ConverterType;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -14,8 +13,9 @@ import lombok.*;
 @Table(name = "audit_log")
 public class AuditLog extends AbstractEntity {
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "conversion_type", nullable = false)
-    private String conversionType;
+    private ConverterType conversionType;
 
     @Column(name = "input_value", nullable = false)
     private String input;

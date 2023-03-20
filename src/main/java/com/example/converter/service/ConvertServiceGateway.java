@@ -1,6 +1,7 @@
 package com.example.converter.service;
 
 import com.example.converter.entity.AuditLog;
+import com.example.converter.enums.ConverterType;
 import com.example.converter.repository.AuditLogRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class ConvertServiceGateway {
         this.auditLogRepository = auditLogRepository;
     }
 
-    public String convertToRomanNumeral(String input, String type) {
+    public String convertToRomanNumeral(String input, ConverterType type) {
         RomanNumeralConverter converter = getConverter(type);
         int parsedInput = converter.parseToInteger(input);
         String result = converter.convertToRoman(parsedInput);
@@ -27,15 +28,14 @@ public class ConvertServiceGateway {
         return result;
     }
 
-    private RomanNumeralConverter getConverter(String type) {
+    private RomanNumeralConverter getConverter(ConverterType type) {
         return switch (type) {
-            case "decimal" -> decimalToRomanConverter;
-            case "binary" -> binaryToRomanConverter;
-            default -> throw new IllegalArgumentException("Invalid conversion type");
+            case DECIMAL -> decimalToRomanConverter;
+            case BINARY -> binaryToRomanConverter;
         };
     }
 
-    public void logConversion(String input, String output, String type) {
+    public void logConversion(String input, String output, ConverterType type) {
         AuditLog log = AuditLog.builder().conversionType(type).input(input).output(output).build();
         auditLogRepository.save(log);
     }

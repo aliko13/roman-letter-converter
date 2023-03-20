@@ -1,5 +1,6 @@
 package com.example.converter.controller;
 
+import com.example.converter.enums.ConverterType;
 import com.example.converter.service.ConvertServiceGateway;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +29,7 @@ public class NumberConversionControllerTest {
     public void testConvertNumber() throws Exception {
         // given
         String input = "123";
-        String type = "decimal";
+        ConverterType type = ConverterType.DECIMAL;
         String romanString = "CXXIII";
 
         when(convertServiceGateway.convertToRomanNumeral(input, type)).thenReturn(romanString);
@@ -36,7 +37,7 @@ public class NumberConversionControllerTest {
         // when / then
         String contentAsString = mockMvc.perform(get("/convert")
                 .param("input", input)
-                .param("type", type)
+                .param("type", String.valueOf(type))
                 ).andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
