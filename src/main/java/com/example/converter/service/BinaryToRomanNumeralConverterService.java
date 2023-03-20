@@ -5,8 +5,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class BinaryToRomanNumeralConverterService implements RomanNumeralConverter {
     @Override
-    public String convertToRomanNumeral(int number) {
-        // implementation logic
-        return null;
+    public String convertToRoman(int number) {
+        return RomanNumeralConverter.super.convertToRoman(number);
+    }
+
+    @Override
+    public int parseToInteger(String number) {
+        return Integer.parseInt(number, 2);
     }
 }

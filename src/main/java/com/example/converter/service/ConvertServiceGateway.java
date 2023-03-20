@@ -20,9 +20,9 @@ public class ConvertServiceGateway {
     }
 
     public String convertToRomanNumeral(String input, String type) {
-        int number = Integer.parseInt(input);
         RomanNumeralConverter converter = getConverter(type);
-        String result = converter.convertToRomanNumeral(number);
+        int parsedInput = converter.parseToInteger(input);
+        String result = converter.convertToRoman(parsedInput);
         logConversion(input, result, type);
         return result;
     }
